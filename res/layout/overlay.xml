@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_hud"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingStart="8dp"
+    android:paddingTop="5dp"
+    android:paddingEnd="4dp"
+    android:paddingBottom="5dp">
+
+    <TextView
+        android:id="@+id/ov_grip"
+        android:layout_width="32dp"
+        android:layout_height="48dp"
+        android:contentDescription="Mover el HUD"
+        android:gravity="center"
+        android:text="⠿"
+        android:textColor="@color/muted"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/ov_nav"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:ellipsize="end"
+        android:fontFamily="sans-serif-medium"
+        android:maxLines="2"
+        android:textColor="@color/accent"
+        android:textSize="14sp"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/ov_prev"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
+        android:contentDescription="Anterior"
+        android:focusable="true"
+        android:gravity="center"
+        android:text="⏮&#xFE0E;"
+        android:textColor="@color/text"
+        android:textSize="22sp" />
+
+    <TextView
+        android:id="@+id/ov_play"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
+        android:contentDescription="Reproducir o pausar"
+        android:focusable="true"
+        android:gravity="center"
+        android:text="▶&#xFE0E;"
+        android:textColor="@color/accent"
+        android:textSize="28sp" />
+
+    <TextView
+        android:id="@+id/ov_next"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
+        android:contentDescription="Siguiente"
+        android:focusable="true"
+        android:gravity="center"
+        android:text="⏭&#xFE0E;"
+        android:textColor="@color/text"
+        android:textSize="22sp" />
+
+    <TextView
+        android:id="@+id/ov_track"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="6dp"
+        android:layout_weight="1"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:text="Sin música"
+        android:textColor="@color/muted"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/ov_close"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
+        android:contentDescription="Cerrar HUD"
+        android:focusable="true"
+        android:gravity="center"
+        android:text="✕"
+        android:textColor="@color/muted"
+        android:textSize="14sp" />
+</LinearLayout>

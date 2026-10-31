@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">DriveDeck</string>
+    <string name="accessibility_label">DriveDeck · lectura de Waze</string>
+    <string name="accessibility_desc">Lee únicamente la pantalla de Waze para mostrar la próxima indicación en el HUD flotante. No realiza acciones ni lee otras aplicaciones.</string>
+</resources>
