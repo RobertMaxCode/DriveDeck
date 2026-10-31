@@ -21,7 +21,8 @@ Prueba con GPS simulado: la indicación del HUD cambió mientras Waze navegaba.
 - Reloj, fecha, velocidad GPS, brújula y batería.
 - Controla Spotify (o cualquier reproductor activo): anterior, play/pausa, siguiente, carátula y título.
 - Lanza Google Maps o Waze con un toque.
-- Atajos directos a Casa y Trabajo (direcciones configurables).
+- Atajos directos a Casa y Trabajo: se configuran en Ajustes → **Destinos** y abren la
+  ruta directamente en el navegador elegido (o el otro si el primero falla).
 - HUD flotante sobre Maps/Waze con los controles de música; con Google Maps muestra
   destino, tiempo, distancia y llegada, y con Waze la indicación y la ruta si activas
   Accesibilidad. Se arrastra por el asa `⠿`, se cierra con `✕` y recuerda la posición.
@@ -58,11 +59,12 @@ adb install -r DriveDeck.apk
    - **Mostrar sobre otras apps**: necesario para el HUD.
    - **Ubicación**: velocidad y brújula.
    - **Accesibilidad (Waze)**: solo si usas Waze, para leer su indicación en el HUD.
-3. Elige Google Maps o Waze y guarda una dirección de casa y otra del trabajo.
+3. Elige Google Maps o Waze y guarda casa y trabajo en **Ajustes → Destinos**.
 4. En el salpicadero:
    - Toca **MAPS/WAZE** para abrir la navegación. Mantén pulsado para abrir el otro.
    - Toca **HUD** para activar la barra flotante.
-   - **CASA/TRABAJO** inician ruta directa si hay dirección guardada.
+   - **CASA/TRABAJO** abren la ruta directamente en el navegador elegido. Mantén pulsado
+     para ir a Destinos y editar la dirección.
    - **SPOTIFY** abre Spotify; mantén pulsado para play/pausa.
    - **LLAMAR** abre el marcador; **ASISTENTE** abre el asistente de voz.
 5. El HUD se oculta mientras estás en las pantallas de DriveDeck y aparece al salir a Maps,

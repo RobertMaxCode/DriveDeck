@@ -167,8 +167,18 @@ public class MainActivity extends Activity implements SensorEventListener {
             return true;
         });
 
-        findViewById(R.id.tile_home).setOnClickListener(v -> goTo(prefs.home(), "casa"));
-        findViewById(R.id.tile_work).setOnClickListener(v -> goTo(prefs.work(), "el trabajo"));
+        View homeTile = findViewById(R.id.tile_home);
+        homeTile.setOnClickListener(v -> goTo(prefs.home(), "casa"));
+        homeTile.setOnLongClickListener(v -> {
+            startActivity(new Intent(this, SettingsActivity.class));
+            return true;
+        });
+        View workTile = findViewById(R.id.tile_work);
+        workTile.setOnClickListener(v -> goTo(prefs.work(), "el trabajo"));
+        workTile.setOnLongClickListener(v -> {
+            startActivity(new Intent(this, SettingsActivity.class));
+            return true;
+        });
 
         View musicTile = findViewById(R.id.tile_music);
         musicTile.setOnClickListener(v -> openSpotify());
@@ -408,35 +418,54 @@ public class MainActivity extends Activity implements SensorEventListener {
 
     private void openNav(String address) {
         String pkg = prefs.navPackage();
-        boolean waze = Prefs.WAZE.equals(pkg);
-        String label = waze ? "Waze" : "Maps";
+        String other = Prefs.WAZE.equals(pkg) ? Prefs.MAPS : Prefs.WAZE;
         if (address == null || address.trim().isEmpty()) {
-            launchApp(pkg, label);
+            launchApp(pkg, appName(pkg));
             return;
         }
+        if (startNavigation(pkg, address)) {
+            return;
+        }
+        if (startNavigation(other, address)) {
+            toast("Abriendo la ruta con " + appName(other));
+            return;
+        }
+        toast("No se pudo abrir la ruta");
+    }
+
+    private boolean startNavigation(String pkg, String address) {
+        boolean waze = Prefs.WAZE.equals(pkg);
         String query = Uri.encode(address.trim());
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(waze
                 ? "waze://?q=" + query + "&navigate=yes"
                 : "google.navigation:q=" + query + "&mode=d"));
         intent.setPackage(pkg);
+        if (launch(intent)) {
+            return true;
+        }
+        Intent fallback = new Intent(Intent.ACTION_VIEW, Uri.parse(waze
+                ? "https://waze.com/ul?q=" + query + "&navigate=yes"
+                : "https://www.google.com/maps/dir/?api=1&destination=" + query + "&travelmode=driving"));
+        fallback.setPackage(pkg);
+        return launch(fallback);
+    }
+
+    private boolean launch(Intent intent) {
         try {
             startActivity(intent);
-        } catch (Exception e) {
-            Intent fallback = new Intent(Intent.ACTION_VIEW, Uri.parse(waze
-                    ? "https://waze.com/ul?q=" + query + "&navigate=yes"
-                    : "geo:0,0?q=" + query));
-            fallback.setPackage(pkg);
-            try {
-                startActivity(fallback);
-            } catch (Exception second) {
-                toast("No se pudo abrir la navegación");
-            }
+            return true;
+        } catch (Exception ignored) {
+            return false;
         }
+    }
+
+    private static String appName(String pkg) {
+        return Prefs.WAZE.equals(pkg) ? "Waze" : "Maps";
     }
 
     private void openOtherNav() {
         String pkg = Prefs.WAZE.equals(prefs.navPackage()) ? Prefs.MAPS : Prefs.WAZE;
-        launchApp(pkg, Prefs.WAZE.equals(pkg) ? "Waze" : "Maps");
+        launchApp(pkg, appName(pkg));
     }
 
     private void launchApp(String pkg, String label) {

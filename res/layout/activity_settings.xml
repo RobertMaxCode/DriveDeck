@@ -85,6 +85,23 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:letterSpacing="0.12"
+            android:text="DESTINOS"
+            android:textColor="@color/muted"
+            android:textSize="11sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="Los botones CASA y TRABAJO del salpicadero abren la ruta a estas direcciones en el navegador elegido. Mantén pulsado el botón para editarlas."
+            android:textColor="@color/muted"
+            android:textSize="11sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="Dirección de casa"
             android:textColor="@color/muted"
