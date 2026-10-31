@@ -116,6 +116,44 @@ bash build.sh
 El APK final se escribe en la raíz del proyecto. El `debug.keystore` permite actualizar la app
 sin desinstalarla; consérvalo si quieres mantener la misma firma.
 
+## Retomar el proyecto
+
+### Misma conversación de Claude Code
+
+Esta sesión se inició en `C:\Users\rober\.local\bin`. Para recuperarla, abre una terminal
+en esa carpeta y ejecuta:
+
+```powershell
+cd C:\Users\rober\.local\bin
+claude --continue
+```
+
+`claude --continue` retoma la última conversación de esa carpeta; `claude --resume` permite
+elegir entre las sesiones. El historial de Claude Code está asociado a la carpeta de trabajo;
+en la app de escritorio, abre la sesión desde el historial. Para guardar el texto de la
+conversación, usa `/export` dentro de Claude Code.
+
+### Sesión nueva con el proyecto
+
+```powershell
+cd C:\Users\rober\DriveDeck
+claude
+```
+
+Y pide: «Continúa DriveDeck. Lee README.md, git log y gh release view v1.0.0.»
+
+### Contexto que no está en el código
+
+- Repo privado: https://github.com/RobertMaxCode/DriveDeck
+- Release privada: https://github.com/RobertMaxCode/DriveDeck/releases/tag/v1.0.0
+- `gh` está instalado en `C:\Users\rober\.local\bin\gh.exe` y autenticado en el llavero de
+  Windows. No hay que pegar tokens.
+- Compilar e instalar: ver **Compilar** e **Instalar** arriba.
+- `debug.keystore` es local y no está en el repo ni en la release; no lo subas.
+- Las capturas del repo están redactadas para no mostrar la ubicación.
+- El móvil de pruebas es un Galaxy Note 9 (Android 10); adb está en
+  `C:\Users\rober\.local\bin\platform-tools\adb.exe`.
+
 ## Probado en
 
 Samsung Galaxy Note 9 (SM-N960F), Android 10 (API 29), con Google Maps, Waze y Spotify.
