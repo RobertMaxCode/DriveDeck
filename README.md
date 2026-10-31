@@ -26,10 +26,11 @@ Prueba con GPS simulado: la indicación del HUD cambió mientras Waze navegaba.
 - HUD flotante sobre Maps/Waze con los controles de música; con Google Maps muestra
   destino, tiempo, distancia y llegada, y con Waze la indicación y la ruta si activas
   Accesibilidad. Se arrastra por el asa `⠿`, se cierra con `✕` y recuerda la posición.
+  En horizontal es una barra compacta que se puede mover por toda la pantalla.
 - HUD personalizable: 10 colores de acento, 5 fondos, opacidad, tamaño, posición y
   elementos visibles, con vista previa y restablecer.
 - El acento elegido también cambia el botón de navegación y el de música del salpicadero.
-- Abre el marcador y el asistente de voz.
+- **LLAMAR** deja elegir entre Contactos y WhatsApp; **ASISTENTE** abre el asistente de voz.
 - Pantalla siempre encendida, modo inmersivo y tema oscuro.
 - No pide internet, ni cuenta, ni anuncios, ni analítica.
 
@@ -66,7 +67,7 @@ adb install -r DriveDeck.apk
    - **CASA/TRABAJO** abren la ruta directamente en el navegador elegido. Mantén pulsado
      para ir a Destinos y editar la dirección.
    - **SPOTIFY** abre Spotify; mantén pulsado para play/pausa.
-   - **LLAMAR** abre el marcador; **ASISTENTE** abre el asistente de voz.
+   - **LLAMAR** pregunta si abrir Contactos o WhatsApp; **ASISTENTE** abre el asistente de voz.
 5. El HUD se oculta mientras estás en las pantallas de DriveDeck y aparece al salir a Maps,
    Waze o cualquier otra app. Su posición se guarda.
 6. Para cambiar colores, tamaño, posición o elementos del HUD: Ajustes → **HUD FLOTANTE**.
@@ -94,7 +95,8 @@ En Ajustes → **HUD FLOTANTE** hay una vista previa y estos controles:
 - **Fondo:** negro, carbón, azul noche, morado noche o verde noche.
 - **Tamaño:** pequeño, mediano o grande; afecta a botones y texto.
 - **Opacidad:** del 40 al 100 %.
-- **Posición:** abajo, centro o arriba. También se puede arrastrar por el asa.
+- **Posición:** abajo, centro o arriba. En horizontal el HUD es compacto y se puede
+  arrastrar por toda la pantalla.
 - **Elementos visibles:** indicación de ruta, título de la canción, asa y botón de cerrar.
 - **Restablecer HUD:** vuelve a los valores por defecto.
 
@@ -142,12 +144,12 @@ cd C:\Users\rober\DriveDeck
 claude
 ```
 
-Y pide: «Continúa DriveDeck. Lee README.md, git log y gh release view v1.0.0.»
+Y pide: «Continúa DriveDeck. Lee README.md, git log y gh release view v1.0.1.»
 
 ### Contexto que no está en el código
 
 - Repo privado: https://github.com/RobertMaxCode/DriveDeck
-- Release privada: https://github.com/RobertMaxCode/DriveDeck/releases/tag/v1.0.0
+- Release privada: https://github.com/RobertMaxCode/DriveDeck/releases/tag/v1.0.1
 - `gh` está instalado en `C:\Users\rober\.local\bin\gh.exe` y autenticado en el llavero de
   Windows. No hay que pegar tokens.
 - Compilar e instalar: ver **Compilar** e **Instalar** arriba.

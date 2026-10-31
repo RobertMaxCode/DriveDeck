@@ -6,6 +6,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.Icon;
@@ -99,52 +100,128 @@ public class OverlayService extends Service implements MediaHelper.Listener {
                 WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
                         | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN,
                 PixelFormat.TRANSLUCENT);
-        params.gravity = Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL;
-        params.horizontalMargin = 0.02f;
-        int barPx = HudStyle.dp(this, HudStyle.playSizeDp(prefs) + 12);
-        int screen = getResources().getDisplayMetrics().heightPixels;
-        int pos = prefs.hudPos();
-        int y;
-        if (pos == Prefs.HUD_POS_CUSTOM && prefs.hudY() >= 0) {
-            y = prefs.hudY();
-        } else if (pos == Prefs.HUD_POS_CENTER) {
-            y = Math.max(0, (screen - barPx) / 2);
-        } else if (pos == Prefs.HUD_POS_TOP) {
-            y = Math.max(0, screen - barPx - HudStyle.dp(this, 40));
-        } else {
-            y = HudStyle.dp(this, 80);
-        }
-        params.y = y;
+        configureWindow(false);
         try {
             wm.addView(root, params);
         } catch (Exception e) {
             stopSelf();
             return;
         }
+        root.post(() -> configureWindow(true));
         dragHandle(root.findViewById(R.id.ov_grip));
         renderNav();
     }
 
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        if (root != null) {
+            configureWindow(true);
+        }
+    }
+
+    private boolean landscape() {
+        return getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
+    }
+
+    private void configureWindow(boolean update) {
+        if (params == null || root == null) {
+            return;
+        }
+        int screenW = getResources().getDisplayMetrics().widthPixels;
+        int screenH = getResources().getDisplayMetrics().heightPixels;
+        int barH = root.getHeight() > 0
+                ? root.getHeight()
+                : HudStyle.dp(this, HudStyle.playSizeDp(prefs) + 12);
+        if (landscape()) {
+            int widthDp = prefs.hudSize() == 0 ? 340 : prefs.hudSize() == 2 ? 560 : 460;
+            int maxWidth = Math.max(0, screenW - HudStyle.dp(this, 16));
+            params.width = Math.min(maxWidth, HudStyle.dp(this, widthDp));
+            params.horizontalMargin = 0f;
+            params.gravity = Gravity.TOP | Gravity.LEFT;
+            int x;
+            int y;
+            if (prefs.hudPos() == Prefs.HUD_POS_CUSTOM) {
+                x = prefs.hudX() >= 0 ? prefs.hudX() : (screenW - params.width) / 2;
+                y = prefs.hudLandY() >= 0 ? prefs.hudLandY() : (screenH - barH) / 2;
+            } else {
+                x = (screenW - params.width) / 2;
+                if (prefs.hudPos() == Prefs.HUD_POS_TOP) {
+                    y = HudStyle.dp(this, 40);
+                } else if (prefs.hudPos() == Prefs.HUD_POS_CENTER) {
+                    y = (screenH - barH) / 2;
+                } else {
+                    y = screenH - barH - HudStyle.dp(this, 80);
+                }
+            }
+            params.x = Math.max(0, Math.min(Math.max(0, screenW - params.width), x));
+            params.y = Math.max(0, Math.min(Math.max(0, screenH - barH), y));
+        } else {
+            params.width = WindowManager.LayoutParams.MATCH_PARENT;
+            params.horizontalMargin = 0.02f;
+            params.gravity = Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL;
+            int pos = prefs.hudPos();
+            int y;
+            if (pos == Prefs.HUD_POS_CUSTOM && prefs.hudY() >= 0) {
+                y = prefs.hudY();
+            } else if (pos == Prefs.HUD_POS_CENTER) {
+                y = Math.max(0, (screenH - barH) / 2);
+            } else if (pos == Prefs.HUD_POS_TOP) {
+                y = Math.max(0, screenH - barH - HudStyle.dp(this, 40));
+            } else {
+                y = HudStyle.dp(this, 80);
+            }
+            params.x = 0;
+            params.y = y;
+        }
+        if (update) {
+            try {
+                wm.updateViewLayout(root, params);
+            } catch (Exception ignored) {
+            }
+        }
+    }
+
     private void dragHandle(View handle) {
         handle.setOnTouchListener(new View.OnTouchListener() {
+            float startX;
             float startY;
-            int startParam;
+            int startParamX;
+            int startParamY;
 
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 switch (event.getActionMasked()) {
                     case MotionEvent.ACTION_DOWN:
+                        startX = event.getRawX();
                         startY = event.getRawY();
-                        startParam = params.y;
+                        startParamX = params.x;
+                        startParamY = params.y;
                         return true;
                     case MotionEvent.ACTION_MOVE:
-                        int max = getResources().getDisplayMetrics().heightPixels - root.getHeight() - 32;
-                        int y = startParam - (int) (event.getRawY() - startY);
-                        params.y = Math.max(0, Math.min(max, y));
+                        int screenW = getResources().getDisplayMetrics().widthPixels;
+                        int screenH = getResources().getDisplayMetrics().heightPixels;
+                        if (landscape()) {
+                            int maxX = Math.max(0, screenW - params.width);
+                            int maxY = Math.max(0, screenH - root.getHeight());
+                            params.x = Math.max(0, Math.min(maxX,
+                                    startParamX + (int) (event.getRawX() - startX)));
+                            params.y = Math.max(0, Math.min(maxY,
+                                    startParamY + (int) (event.getRawY() - startY)));
+                        } else {
+                            int maxY = Math.max(0, screenH - root.getHeight() - 32);
+                            int y = startParamY - (int) (event.getRawY() - startY);
+                            params.y = Math.max(0, Math.min(maxY, y));
+                        }
                         wm.updateViewLayout(root, params);
                         return true;
                     case MotionEvent.ACTION_UP:
-                        prefs.setHudY(params.y);
+                        if (landscape()) {
+                            prefs.setHudX(params.x);
+                            prefs.setHudLandY(params.y);
+                        } else {
+                            prefs.setHudY(params.y);
+                        }
                         prefs.setHudPos(Prefs.HUD_POS_CUSTOM);
                         return true;
                     default:

@@ -239,7 +239,7 @@ public class SettingsActivity extends Activity {
         TextView resetPosition = secondary("Restablecer posición");
         resetPosition.setOnClickListener(v -> {
             prefs.setHudPos(Prefs.HUD_POS_BOTTOM);
-            prefs.clearHudY();
+            prefs.clearHudPositions();
             onHudChanged();
         });
         hudCustom.addView(resetPosition);
@@ -263,7 +263,7 @@ public class SettingsActivity extends Activity {
         hudCustom.addView(reset);
 
         TextView hint = new TextView(this);
-        hint.setText("Si el asa está visible, puedes arrastrar el HUD. Los cambios se aplican al instante.");
+        hint.setText("Si el asa está visible, puedes arrastrar el HUD; en horizontal se mueve por toda la pantalla. Los cambios se aplican al instante.");
         hint.setTextColor(HudStyle.MUTED);
         hint.setTextSize(11);
         hint.setPadding(0, dp(8), 0, 0);
@@ -335,7 +335,7 @@ public class SettingsActivity extends Activity {
                 prefs.setHudSize(value);
             } else {
                 prefs.setHudPos(value);
-                prefs.clearHudY();
+                prefs.clearHudPositions();
             }
             onHudChanged();
         });

@@ -59,8 +59,24 @@ final class Prefs {
         sp.edit().putInt("hud_y", y).apply();
     }
 
-    void clearHudY() {
-        sp.edit().remove("hud_y").apply();
+    int hudX() {
+        return sp.getInt("hud_x", -1);
+    }
+
+    void setHudX(int x) {
+        sp.edit().putInt("hud_x", x).apply();
+    }
+
+    int hudLandY() {
+        return sp.getInt("hud_land_y", -1);
+    }
+
+    void setHudLandY(int y) {
+        sp.edit().putInt("hud_land_y", y).apply();
+    }
+
+    void clearHudPositions() {
+        sp.edit().remove("hud_y").remove("hud_x").remove("hud_land_y").apply();
     }
 
     int accent() {
@@ -147,6 +163,8 @@ final class Prefs {
                 .putBoolean("hud_close", true)
                 .putInt("hud_pos", HUD_POS_BOTTOM)
                 .remove("hud_y")
+                .remove("hud_x")
+                .remove("hud_land_y")
                 .apply();
     }
 }

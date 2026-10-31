@@ -2,6 +2,7 @@ package com.rober.drivedeck;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -189,13 +190,7 @@ public class MainActivity extends Activity implements SensorEventListener {
             return true;
         });
 
-        findViewById(R.id.tile_call).setOnClickListener(v -> {
-            try {
-                startActivity(new Intent(Intent.ACTION_DIAL, Uri.parse("tel:")));
-            } catch (Exception e) {
-                toast("No se pudo abrir el teléfono");
-            }
-        });
+        findViewById(R.id.tile_call).setOnClickListener(v -> chooseCallApp());
         findViewById(R.id.tile_assist).setOnClickListener(v -> assistant());
         findViewById(R.id.tile_hud).setOnClickListener(v -> toggleHud());
 
@@ -492,6 +487,40 @@ public class MainActivity extends Activity implements SensorEventListener {
 
     private void openSpotify() {
         launchApp(Prefs.SPOTIFY, "Spotify");
+    }
+
+    private void chooseCallApp() {
+        new AlertDialog.Builder(this)
+                .setTitle("Llamar con")
+                .setItems(new CharSequence[]{"Contactos", "WhatsApp"}, (dialog, which) -> {
+                    if (which == 0) {
+                        openContacts();
+                    } else {
+                        openWhatsApp();
+                    }
+                })
+                .show();
+    }
+
+    private void openContacts() {
+        try {
+            startActivity(new Intent(Intent.ACTION_DIAL, Uri.parse("tel:")));
+        } catch (Exception e) {
+            toast("No se pudo abrir el teléfono");
+        }
+    }
+
+    private void openWhatsApp() {
+        Intent intent = getPackageManager().getLaunchIntentForPackage("com.whatsapp");
+        if (intent == null) {
+            toast("WhatsApp no está instalado");
+            return;
+        }
+        try {
+            startActivity(intent);
+        } catch (Exception e) {
+            toast("No se pudo abrir WhatsApp");
+        }
     }
 
     private void assistant() {
