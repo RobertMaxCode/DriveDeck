@@ -120,32 +120,6 @@ bash build.sh
 El APK final se escribe en la raíz del proyecto. El `debug.keystore` permite actualizar la app
 sin desinstalarla; consérvalo si quieres mantener la misma firma.
 
-## Retomar el proyecto
-
-### Misma conversación de Claude Code
-
-Esta sesión se inició en `C:\Users\rober\.local\bin`. Para recuperarla, abre una terminal
-en esa carpeta y ejecuta:
-
-```powershell
-cd C:\Users\rober\.local\bin
-claude --continue
-```
-
-`claude --continue` retoma la última conversación de esa carpeta; `claude --resume` permite
-elegir entre las sesiones. El historial de Claude Code está asociado a la carpeta de trabajo;
-en la app de escritorio, abre la sesión desde el historial. Para guardar el texto de la
-conversación, usa `/export` dentro de Claude Code.
-
-### Sesión nueva con el proyecto
-
-```powershell
-cd C:\Users\rober\DriveDeck
-claude
-```
-
-Y pide: «Continúa DriveDeck. Lee README.md, git log y gh release view v1.0.1.»
-
 ### Contexto que no está en el código
 
 - Repo privado: https://github.com/RobertMaxCode/DriveDeck
