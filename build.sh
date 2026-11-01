@@ -20,8 +20,8 @@ mkdir -p "$OUT/gen" "$OUT/classes" "$OUT/dex"
     --java "$OUT/gen" \
     --min-sdk-version 26 \
     --target-sdk-version 33 \
-    --version-code 2 \
-    --version-name 1.0.1 \
+    --version-code 3 \
+    --version-name 1.0.2 \
     "$OUT/res.zip"
 
 find "$ROOT/src" "$OUT/gen" -name '*.java' | sed "s|^$ROOT|$WROOT|" > "$OUT/sources.txt"

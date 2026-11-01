@@ -542,17 +542,20 @@ public class MainActivity extends Activity implements SensorEventListener {
             toast("Activa «Mostrar sobre otras apps» y vuelve a pulsar HUD");
             return;
         }
-        boolean on = !prefs.hud();
-        prefs.setHud(on);
+        boolean on = prefs.hud() && OverlayService.running;
         if (on) {
+            prefs.setHud(false);
+            stopService(new Intent(this, OverlayService.class));
+            toast("HUD desactivado");
+        } else {
+            prefs.setHud(true);
             try {
                 startForegroundService(new Intent(this, OverlayService.class));
+                toast("HUD activado: aparece al salir a Maps, Waze u otra app");
             } catch (Exception e) {
                 prefs.setHud(false);
                 toast("No se pudo iniciar el HUD");
             }
-        } else {
-            stopService(new Intent(this, OverlayService.class));
         }
         updateHudLabel();
     }
